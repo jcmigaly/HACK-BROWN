@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const Prescription = require('./Prescription');
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 255
     },
+    prescriptions: [Prescription.schema]
 })
 
 // JWT function must be declared before creating User model
