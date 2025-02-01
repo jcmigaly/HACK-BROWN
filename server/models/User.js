@@ -41,8 +41,7 @@ userSchema.methods.generateAuthToken = function() {
 
 const User = mongoose.model('User', userSchema)
 
-// TODO: use Joi password module
-function validateUser(User) {
+function validateRegister(User) {
     const schema = Joi.object({
         name: Joi.string().min(2).max(50).required(),
         email: Joi.string().min(5).max(50).required(),
@@ -52,5 +51,16 @@ function validateUser(User) {
       return schema.validate(User);
 }
 
+function validateLogin(User) {
+    const schema = Joi.object({
+        email: Joi.string().min(5).max(50).required(),
+        password: Joi.string().min(5).max(255).required(),
+      });
+    
+      return schema.validate(User);
+}
+
 module.exports.User = User; //export the User object
-module.exports.validate = validateUser; //export the User object
+module.exports.validateRegister = validateRegister; //export the User object
+module.exports.validateLogin = validateLogin; //export the User object
+
