@@ -3,7 +3,13 @@ const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: true,
+        minlength: 2,
+        maxlength: 50
+    },
+    lastName: {
         type: String,
         required: true,
         minlength: 2,
@@ -22,33 +28,27 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 255
     },
-    // TODO: DATABASE SCHEMA
-    plan: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Meal'
-    },
-    practices: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Practice'
-    }
 })
 
 // JWT function must be declared before creating User model
 userSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id, name: this.name }, 'jwtPrivateKey') // TODO: Hide jwtPrivateKey in env variable
+    const token = jwt.sign({ _id: this._id, firstName: this.firstName, lastName: this.lastName }, 'jwtPrivateKey') // TODO: Hide jwtPrivateKey in env variable
     return token
 }
 
 const User = mongoose.model('User', userSchema)
 
-function validateRegister(User) {
+function validateRegister(user) {
     const schema = Joi.object({
-        name: Joi.string().min(2).max(50).required(),
+        firstName: Joi.string().min(2).max(50).required(),
+        lastName: Joi.string().min(2).max(50).required(),
         email: Joi.string().min(5).max(50).required(),
         password: Joi.string().min(5).max(255).required(),
       });
-    
-      return schema.validate(User);
+    const { error, value } = schema.validate(user);
+    console.log("Joi Validation Result:", { error, value });
+    return { error, value };
+    //   return schema.validate(user);
 }
 
 function validateLogin(User) {
