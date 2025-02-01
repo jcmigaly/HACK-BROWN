@@ -1,0 +1,13 @@
+.filledButton{
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-family: inherit;
+    background-color: #925833;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    font-family: 'agrandir-reg';
+    width: fit-content;
+    color: white;
+    margin-top: 1vh;
+  }
