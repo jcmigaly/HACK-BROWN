@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
         .send(_.pick(user, ['_id', 'firstName', 'lastName', 'email']))
 })
 
-// POST: Register a new User
+// POST: Login User
 router.post('/login', async (req, res) => {
     // Validate that the user has sent valid properties (name, email, password)
     const { error } = validateLogin(req.body)
