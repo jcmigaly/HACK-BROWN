@@ -17,18 +17,21 @@ function App() {
 
   return (
     <div className='App'>
+      <Grid2 container direction={'row'} spacing={0} className='App-header'>
+        <div style={{fontSize: '30px', color: 'black', fontFamily: 'agrandir-reg', margin: '5px', marginLeft: '20px', cursor: 'pointer'
+        }} onClick={()=> setPage('home')}>Scriptly</div>
+      </Grid2>
       <Grid2
     container
-    justifyContent="center"
+    justifyContent='center'
     display={'flex'}
     flexDirection={'column'}
     style={{
-      height: '100vh',  // Full height of the viewport
       width: '100vw',   // Full width of the viewport
       padding: '0',
-      margin: '0',
       backgroundColor: '#EAD2C3',
       minHeight: '100vh',
+   overflowY: 'auto'
     }}
   >
         
@@ -39,12 +42,12 @@ function App() {
            </Grid2>
            <Grid2 container direction={'column'} spacing={3} className='subtext'>
            <div className='subtitle'>The key to managing and understanding your prescriptions</div>
-           <button className='getStartedButton' onClick={()=> setPage('getStarted')}> Get Started</button> 
+           <button className='filledButton' onClick={()=> setPage('getStarted')}> Get Started</button> 
            </Grid2 >
             </Grid2>
         
         : page === 'getStarted' ? <GetStarted setPage={setPage}/> 
-        : page === 'dashboard' ? <Dashboard/> 
+        : page === 'dashboard' ? <Dashboard setPage={setPage} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/> 
         : page === 'logIn' ? <LogIn setPage={setPage} setLoggedIn={setLoggedIn}/> 
         : page === 'signUp' ? <SignUp setPage={setPage} setLoggedIn={setLoggedIn}/>
         :null

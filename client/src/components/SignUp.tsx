@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import '../styles/LogIn.css'
 import {Grid2, Paper} from '@mui/material'
+import scribble from '../assets/HEAL.svg'
 
 interface LogInProps {
     setPage: Dispatch<SetStateAction<string>>
@@ -11,7 +12,8 @@ function SignUp(props: LogInProps) {
     return (
       <Grid2 className='mainMessage'>
       <div style={{ fontSize: '60px', paddingInline: '10vw' , justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column', color: '#6c9482', fontFamily:  'agrandir-reg' }}>
-       <Paper elevation={4} style={{padding: '2vh', margin: '2vh', borderRadius:'20px', backgroundColor: '#ebffe5', height: 'fit-content', width: '40vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+      <img src={scribble} alt='scribble' className='scribble' style={{marginTop:'90px'}}/>
+       <Paper elevation={4} style={{padding: '2vh', margin: '2vh', borderRadius:'20px',backgroundColor: '#F9F4F0', height: 'fit-content', width: '40vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
        <div className='brandText'>Sign Up</div>
    
        <Grid2 container spacing={2} style={{display: 'flex', flexDirection:'column', justifyContent:'flex-start', alignItems: 'flex-start',  fontSize: '20px'}}>

@@ -9,8 +9,14 @@
 #root {
  
   margin: none;
-  text-align: center;
   background-color: DAB095;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  overflow-y: auto;
 }
 
 .logo {
@@ -49,37 +55,20 @@
   color: #888;
 }
 
-.App-header{
-  background-color: #CF9977;
-  height: 8vh;
-  width: 96vw;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3vh;
-  color: Black;
-  position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-  border-radius: 20px;
-  margin-top: 2vh;
-  font-family: 'agrandir-reg';
 
-}
 .App{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: top;
   color: Black;
   margin: none;
+    min-height: 100vh; /* Ensures content expands beyond viewport */
+    overflow-y: auto; /* Enables vertical scrolling */
 
 }
 
 .App-body{
-  padding-top: 10vh;
+  padding-top: 18vh;
   overflow-y: auto;
   flex-grow: 1;
   flex-direction: column;
@@ -99,6 +88,11 @@
   line-height: 1.1;
   font-family: 'agrandir-reg';
 }
+
+.scribble {
+  height: 30vh;
+  width: auto; /* Maintain aspect ratio */
+}
 .filledButton{
   border-radius: 8px;
   border: 1px solid transparent;
@@ -107,22 +101,39 @@
   font-weight: 500;
   font-family: inherit;
   background-color: #925833;
-  cursor: pointer;
   transition: border-color 0.25s;
   font-family: 'agrandir-reg';
   width: fit-content;
   color: white
-}
-.scribble {
-  height: 30vh;
-  width: auto; /* Maintain aspect ratio */
 }
 
 .subtext{
 
   flex-direction: column;
   justify-content: flex-start;
-
   display: flex;
   align-items: center;
+}
+
+.scribbleSmall{
+  height: 10vh;
+  width: auto; /* Maintain aspect ratio */
+}
+
+.App-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  background-color:#EAD2C3;
+ position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  font-family: 'agrandir-reg';
+  font-size: 1.5em;
+  color: #925833;
+  border-bottom: 2px solid #925833;
 }
