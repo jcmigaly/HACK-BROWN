@@ -37,8 +37,6 @@ router.post('/me', auth, async (req, res) => {
     interactionsArray.forEach((item) => {
         // Remove first 11 characters
         let cleanedText = item.category.substring(11);
-        console.log(cleanedText)
-        
         // Split on ',' and trim whitespace
         let drugs = cleanedText.split(',').map(drug => drug.trim());
         if (!drugs[1]) {
@@ -66,27 +64,14 @@ router.delete('/me', auth, async (req, res) => {
     const user = await User.findById(req.user._id)
     user.prescriptions = user.prescriptions.filter(prescription => prescription.name !== req.body.name);
 
-    let interactionsArray = await getDrugInteractions(user.prescriptions)
-    user.interactions = []
-
-    interactionsArray.forEach((item) => {
-        // Remove first 11 characters
-        let cleanedText = item.category.substring(11);
-        console.log(cleanedText)
-        
-        // Split on ',' and trim whitespace
-        let drugs = cleanedText.split(',').map(drug => drug.trim());
-        if (!drugs[1]) {
-            return; // This will skip the current iteration and move to the next item in the loop
-        }
-        let curr_interaction = new Interaction({
-            name1: drugs[0],
-            name2: drugs[1],
-            level: item.level,  // Assuming level corresponds to severity
-            description: item.description
-        });
-        user.interactions.push(curr_interaction)
-    })
+    interactionsArray = user.interactions.filter((item) => {
+        // Check if the condition is true for this item
+        return !(
+            item.name1.toLowerCase().includes(req.body.name.toLowerCase()) || 
+            item.name2.toLowerCase().includes(req.body.name.toLowerCase())
+        );
+    });
+    user.interactions = interactionsArray;
     
     await user.save()
     res.send(user)
