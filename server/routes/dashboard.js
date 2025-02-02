@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('../models/User');
 const auth = require('../middleware/auth')
-const { Prescription, validatePrescription } = require('../models/Prescription');
+const { Prescription, validatePrescription, validateDelete } = require('../models/Prescription');
 
 
 // Given a person logged in, if they have valid JWT, get all their info
@@ -23,6 +23,20 @@ router.post('/me', auth, async (req, res) => {
     // TODO: ADD CALL TO API THAT GETS THE PILL PICTURE
     const user = await User.findById(req.user._id)
     user.prescriptions.push(req.body)
+
+    await user.save()
+    res.send(user)
+})
+
+// Delete a single prescription to user 
+router.delete('/me', auth, async (req, res) => {
+    const { error } = validateDelete(req.body)
+    if (error) {
+        return res.status(400).send(error.details[0].message)
+    }
+    // TODO: ADD CALL TO API THAT GETS THE PILL PICTURE
+    const user = await User.findById(req.user._id)
+    user.prescriptions = user.prescriptions.filter(prescription => prescription.name !== prescriptionName);
 
     await user.save()
     res.send(user)
