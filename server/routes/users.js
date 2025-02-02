@@ -32,9 +32,15 @@ router.post('/', async (req, res) => {
     const token = user.generateAuthToken()
 
     // Send JWT to client header
-    res
-        .header('x-auth-token', token)
-        .send(_.pick(user, ['_id', 'firstName', 'lastName', 'email']))
+    res.cookie('x-auth-token', token, {
+        httpOnly: true,
+        sameSite: 'None',  // Important for cross-origin requests
+        secure: false,     // Disable the secure flag in development (cookies work without HTTPS)
+        maxAge: 24 * 60 * 60 * 1000  // Cookie expiration time
+      });
+    res.header('x-auth-token', token)
+    console.log('Sending response with headers:', res.getHeaders());
+    res.send(_.pick(user, ['_id', 'firstName', 'lastName', 'email']))
 })
 
 // POST: Login User
@@ -56,12 +62,12 @@ router.post('/login', async (req, res) => {
     if (!validPassword) {
         return res.status(401).send('Incorrect password')
     }
-    const token = user.generateAuthToken()
 
+    const token = user.generateAuthToken()
     // Send JWT to client header
-    res
-        .header('x-auth-token', token)
+    res.setHeader('x-auth-token', token)
         .send(_.pick(user, ['_id', 'name', 'email']))
+        
 })
 
 module.exports = router; //export the router object

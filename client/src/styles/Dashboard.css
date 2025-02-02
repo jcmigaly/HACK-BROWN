@@ -34,14 +34,14 @@ width: 100%; /* Takes full width */
     font-family: 'agrandir-bold';
     align-items: center;
 }
-.lBox{
+.rBox{
     width: 40vw;
     height: 60vh;
     ;
    
 }
 
-.rBox{
+.lBox{
     width: 50vw;
     height: 60vh;
 

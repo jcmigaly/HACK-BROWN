@@ -3,13 +3,13 @@ import '../styles/Dashboard.css'
 
 
 
-interface rxProps{
+export interface PrescriptionProps{
     drugName: string;
     image: string;
     dosage: string;
 }
 
-function Prescription(props: rxProps) {
+function Prescription(props: PrescriptionProps) {
     return (
     
         <div className='prescriptionContainer'>

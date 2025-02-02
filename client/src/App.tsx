@@ -13,6 +13,7 @@ import SignUp from './components/SignUp'
 function App() {
   const [page, setPage] = useState<string>('home')
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [jwt, setjwt] = useState('');
 
 
   return (
@@ -47,8 +48,8 @@ function App() {
             </Grid2>
         
         : page === 'getStarted' ? <GetStarted setPage={setPage}/> 
-        : page === 'dashboard' ? <Dashboard setPage={setPage} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/> 
-        : page === 'logIn' ? <LogIn setPage={setPage} setLoggedIn={setLoggedIn}/> 
+        : page === 'dashboard' ? <Dashboard setPage={setPage} setLoggedIn={setLoggedIn} loggedIn={loggedIn} jwt={jwt} setjwt={setjwt}/> 
+        : page === 'logIn' ? <LogIn setPage={setPage} setLoggedIn={setLoggedIn} setjwt={setjwt}/> 
         : page === 'signUp' ? <SignUp setPage={setPage} setLoggedIn={setLoggedIn}/>
         :null
         }
