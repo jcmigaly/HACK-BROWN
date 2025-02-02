@@ -67,7 +67,7 @@ router.delete('/me', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message)
     }
     const user = await User.findById(req.user._id)
-    user.prescriptions = user.prescriptions.filter(prescription => prescription.name !== req.body.name);
+    user.prescriptions = user.prescriptions.filter(prescription => prescription.name.toLowerCase() !== req.body.name.toLowerCase());
 
     interactionsArray = user.interactions.filter((item) => {
         // Check if the condition is true for this item
@@ -92,7 +92,6 @@ router.get('/interactions', auth, async (req, res) => {
 router.get('/all', auth, async (req, res) => {
     const user = await User.findById(req.user._id)
     let interactionsArray = await getDrugInteractions(user.prescriptions)
-    console.log('here')
     user.interactions = []
 
     interactionsArray.forEach((item) => {
