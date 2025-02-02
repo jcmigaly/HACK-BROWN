@@ -40,7 +40,7 @@ function SignUp(props: LogInProps) {
 
     return (
       <Grid2 className='mainMessage'>
-      <div style={{ fontSize: '60px', paddingInline: '10vw' , justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column', color: '#6c9482', fontFamily:  'agrandir-reg' }}>
+      <div style={{ fontSize: '60px', paddingInline: '10vw' , justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column', color: '#6c9482', fontFamily:  'agrandir-reg', marginTop: '10vh' }}>
       <img src={scribble} alt='scribble' className='scribble' style={{marginTop:'90px'}}/>
        <Paper elevation={4} style={{padding: '2vh', margin: '2vh', borderRadius:'20px',backgroundColor: '#F9F4F0', height: 'fit-content', width: '40vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
        <div className='brandText'>Sign Up</div>

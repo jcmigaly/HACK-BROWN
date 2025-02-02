@@ -3,6 +3,7 @@ import { Grid2, Paper } from '@mui/material';
 import Prescription from './Prescription';
 import '../styles/Dashboard.css';
 
+
 interface Prescription {
 
   name: string;
