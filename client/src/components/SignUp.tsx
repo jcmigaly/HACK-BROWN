@@ -4,13 +4,17 @@ import {Grid2, Paper} from '@mui/material'
 import scribble from '../assets/HEAL.svg'
 import axios from 'axios'
 import { PrescriptionProps } from './Prescription'
+import  {interaction} from './InteractionList'
 
 interface LogInProps {
     setPage: Dispatch<SetStateAction<string>>
     setLoggedIn: Dispatch<SetStateAction<boolean>>
+    jwt: string
     setjwt: Dispatch<SetStateAction<string>>
     unsavedPrescriptions: PrescriptionProps[];
     setUnsavedPrescriptions: Dispatch<SetStateAction<PrescriptionProps[]>>;
+    interactions: interaction[]
+    setInteractions: Dispatch<SetStateAction<interaction[]>>;
 }
 
 function SignUp(props: LogInProps) {
@@ -36,8 +40,12 @@ function SignUp(props: LogInProps) {
       });
       props.setjwt(response.data.token);
       props.setLoggedIn(true);
-      props.setPage('dashboard');
       props.setUnsavedPrescriptions([]);
+      const response1 = await axios.get('http://localhost:3000/api/dashboard/all', {
+        headers: { 'x-auth-token': props.jwt }
+      });
+      props.setInteractions(response.data.interactions)
+      props.setPage('dashboard');
       
     } catch (error: unknown) {  // Explicitly declare error as 'unknown'
         if (axios.isAxiosError(error)) {

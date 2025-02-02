@@ -56,7 +56,6 @@ router.post('/me', auth, async (req, res) => {
         });
         user.interactions.push(curr_interaction)
     })
-    
     await user.save()
     res.send(user)
 })
@@ -89,6 +88,31 @@ router.get('/interactions', auth, async (req, res) => {
     res.send(user.interactions);
 })
 
+// Calculate all prescriptions 
+router.get('/all', auth, async (req, res) => {
+    const user = await User.findById(req.user._id)
 
+    let interactionsArray = await getDrugInteractions(user.prescriptions)
+    user.interactions = []
+
+    interactionsArray.forEach((item) => {
+        // Remove first 11 characters
+        let cleanedText = item.category.substring(11);
+        // Split on ',' and trim whitespace
+        let drugs = cleanedText.split(',').map(drug => drug.trim());
+        if (!drugs[1]) {
+            return; // This will skip the current iteration and move to the next item in the loop
+        }
+        let curr_interaction = new Interaction({
+            name1: drugs[0],
+            name2: drugs[1],
+            level: item.level,  // Assuming level corresponds to severity
+            description: item.description
+        });
+        user.interactions.push(curr_interaction)
+    })
+    await user.save()
+    res.send(user)
+})
 
 module.exports = router; //export the router object

@@ -29,7 +29,10 @@ interface DashboardProps {
 
     unsavedPrescriptions: PrescriptionProps[];
     setUnsavedPrescriptions: Dispatch<SetStateAction<PrescriptionProps[]>>;
+    interactions: interaction[]
+    setInteractions:  Dispatch<SetStateAction<interaction[]>>;
 }
+
 
 
 
@@ -38,7 +41,7 @@ function Dashboard(props: DashboardProps) {
   const [deleteDrug, setDeleteDrug] = useState<string>('')
   const [newPrescription, setNewPrescription] = useState<PrescriptionProps>({ name: '', dosage: '', deleteDrug: () => {} });
   const [open, setOpen] = useState<boolean>(false)
-  const [interactions, setInteractions] = useState<interaction[]>([])
+  
   const [switcher, setSwitcher] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   
@@ -73,7 +76,7 @@ function Dashboard(props: DashboardProps) {
         headers: { 'x-auth-token': props.jwt }
       });
       console.log(response.data)
-      setInteractions(response.data.interactions)
+      props.setInteractions(response.data.interactions)
       setSwitcher(!switcher)
     } catch (error: unknown)
     {
@@ -160,7 +163,7 @@ function Dashboard(props: DashboardProps) {
           console.log(response.data)
           props.setFirstName(response.data.firstName)
           props.setPrescriptions(response.data.prescriptions)
-          setInteractions(response.data.interactions)
+          props.setInteractions(response.data.interactions)
           setLoading(false)
 
       }  catch (error: unknown) {
@@ -187,7 +190,7 @@ function Dashboard(props: DashboardProps) {
         <Grid2 container spacing={3} direction= {'column'} className='mainGrid' >
                   <Grid2 container direction={'row'}spacing={0} className='welcomeContainer'>
                     {props.loggedIn ? <div className='welcome'>Hi, {props.firstName}!</div> : <></>}
-                    {props.loggedIn ? <button style={{marginRight: '5vw', alignSelf: 'center'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home'); props.clearUser(); props.setjwt('')}}> Log Out</button> 
+                    {props.loggedIn ? <button style={{marginRight: '5vw', alignSelf: 'center'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home'); props.clearUser(); props.setjwt(''); props.setInteractions([])}}> Log Out</button> 
                     : <button className='filledButton' onClick={()=> props.setPage('signUp')}> Register</button>}
                     </Grid2>
                 <Grid2 container spacing={5} direction={'row'} className='subGrid'>
@@ -213,7 +216,7 @@ function Dashboard(props: DashboardProps) {
                           </Grid2>: !props.loggedIn ? <div className='subtitles'>Register to see interactions</div> :<></>}
                           </Grid2>
                           <Grid2 container spacing={0} direction={'column'} className='interactionListContainer'>
-                            <InteractionList interactions={interactions}/>
+                            <InteractionList interactions={props.interactions}/>
                           </Grid2>
                           </Grid2>
 

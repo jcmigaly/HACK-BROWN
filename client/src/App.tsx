@@ -11,6 +11,7 @@ import SignUp from './components/SignUp'
 import { PrescriptionProps } from './components/Prescription'
 import axios from 'axios'
 import { set } from 'mongoose'
+import {interaction} from './components/InteractionList'
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
   const [prescriptions, setPrescriptions] = useState<PrescriptionProps[]>([])
   const [firstName, setFirstName] = useState<string>('')
   const [unsavedPrescriptions, setUnsavedPrescriptions] = useState<PrescriptionProps[]>([])
+  const [interactions, setInteractions] = useState<interaction[]>([])
 
   const clearUser = () => {
     setFirstName('')
@@ -81,9 +83,9 @@ function App() {
             </Grid2>
         
         : page === 'getStarted' ? <GetStarted setPage={setPage}/> 
-        : page === 'dashboard' ? <Dashboard setPage={setPage} setLoggedIn={setLoggedIn} loggedIn={loggedIn} jwt={jwt} setjwt={setjwt} setFirstName={setFirstName } setPrescriptions={setPrescriptions} firstName={firstName} prescriptions={prescriptions} clearUser={clearUser} setUnsavedPrescriptions={setUnsavedPrescriptions} unsavedPrescriptions={unsavedPrescriptions}/> 
+        : page === 'dashboard' ? <Dashboard setPage={setPage} setLoggedIn={setLoggedIn} loggedIn={loggedIn} jwt={jwt} setjwt={setjwt} setFirstName={setFirstName } setPrescriptions={setPrescriptions} firstName={firstName} prescriptions={prescriptions} clearUser={clearUser} setUnsavedPrescriptions={setUnsavedPrescriptions} unsavedPrescriptions={unsavedPrescriptions} interactions={interactions} setInteractions={setInteractions}/> 
         : page === 'logIn' ? <LogIn setPage={setPage} setLoggedIn={setLoggedIn} setjwt={setjwt}/> 
-        : page === 'signUp' ? <SignUp setPage={setPage} setLoggedIn={setLoggedIn} setjwt={setjwt}  setUnsavedPrescriptions={setUnsavedPrescriptions} unsavedPrescriptions={unsavedPrescriptions}/>
+        : page === 'signUp' ? <SignUp jwt= {jwt} interactions={interactions} setInteractions={setInteractions} setPage={setPage} setLoggedIn={setLoggedIn} setjwt={setjwt}  setUnsavedPrescriptions={setUnsavedPrescriptions} unsavedPrescriptions={unsavedPrescriptions}/>
         :null
         }
         
