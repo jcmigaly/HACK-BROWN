@@ -43,6 +43,7 @@ function SignUp(props: LogInProps) {
       props.setLoggedIn(true);
       console.log(props.unsavedPrescriptions)
       props.setUnsavedPrescriptions([]);
+      props.setPage('dashboard');
       
     } catch (error: unknown) {  // Explicitly declare error as 'unknown'
         if (axios.isAxiosError(error)) {
@@ -67,7 +68,7 @@ function SignUp(props: LogInProps) {
     });
     props.setInteractions(response.data.interactions)
     console.log(props.interactions)
-    props.setPage('dashboard');
+    
   }  catch (error: unknown) {  // Explicitly declare error as 'unknown'
     if (axios.isAxiosError(error)) {
       if(error.response){
