@@ -5,6 +5,7 @@ import scribble from '../assets/HEAL.svg'
 import axios from 'axios'
 import { PrescriptionProps } from './Prescription'
 import  {interaction} from './InteractionList'
+import Interaction from './Interaction'
 
 interface LogInProps {
     setPage: Dispatch<SetStateAction<string>>
@@ -40,12 +41,8 @@ function SignUp(props: LogInProps) {
       });
       props.setjwt(response.data.token);
       props.setLoggedIn(true);
+      console.log(props.unsavedPrescriptions)
       props.setUnsavedPrescriptions([]);
-      const response1 = await axios.get('http://localhost:3000/api/dashboard/all', {
-        headers: { 'x-auth-token': props.jwt }
-      });
-      props.setInteractions(response.data.interactions)
-      props.setPage('dashboard');
       
     } catch (error: unknown) {  // Explicitly declare error as 'unknown'
         if (axios.isAxiosError(error)) {
@@ -64,6 +61,30 @@ function SignUp(props: LogInProps) {
     }
   }
   }
+  try {
+    const response = await axios.get('http://localhost:3000/api/dashboard/all', {
+      headers: { 'x-auth-token': props.jwt }
+    });
+    props.setInteractions(response.data.interactions)
+    console.log(props.interactions)
+    props.setPage('dashboard');
+  }  catch (error: unknown) {  // Explicitly declare error as 'unknown'
+    if (axios.isAxiosError(error)) {
+      if(error.response){
+        console.log('Error logging in:', error.response.data);
+        if (error.response.status === 401) {
+          setErr('Invalid email or password');
+        } else {
+          setErr('Please enter a valid email and password of at least 5 characters');
+        }
+      
+    } else {
+      console.error('Unexpected error:', error);
+      setErr('An unexpected error occurred.');
+
+}
+}
+}
  }
 }
 

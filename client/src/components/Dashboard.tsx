@@ -190,7 +190,7 @@ function Dashboard(props: DashboardProps) {
         <Grid2 container spacing={3} direction= {'column'} className='mainGrid' >
                   <Grid2 container direction={'row'}spacing={0} className='welcomeContainer'>
                     {props.loggedIn ? <div className='welcome'>Hi, {props.firstName}!</div> : <></>}
-                    {props.loggedIn ? <button style={{marginRight: '5vw', alignSelf: 'center'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home'); props.clearUser(); props.setjwt(''); props.setInteractions([])}}> Log Out</button> 
+                    {props.loggedIn ? <button style={{marginRight: '5vw', alignSelf: 'center'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home'); props.clearUser(); props.setjwt(''); props.setInteractions([]); setSwitcher(!setSwitcher)}}> Log Out</button> 
                     : <button className='filledButton' onClick={()=> props.setPage('signUp')}> Register</button>}
                     </Grid2>
                 <Grid2 container spacing={5} direction={'row'} className='subGrid'>
