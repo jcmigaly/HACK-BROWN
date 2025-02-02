@@ -77,13 +77,8 @@ router.delete('/me', auth, async (req, res) => {
 })
 
 // Calculate all prescriptions 
-router.post('/me', auth, async (req, res) => {
+router.post('/all', auth, async (req, res) => {
     const user = await User.findById(req.user._id)
-
-    if (prescriptionExists) {
-        return res.status(400).send("Prescription with this name already exists.");
-    }
-    user.prescriptions.push(req.body)
 
     let interactionsArray = await getDrugInteractions(user.prescriptions)
     user.interactions = []
