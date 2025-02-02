@@ -27,5 +27,15 @@ function validatePrescription(prescription) {
     return schema.validate(prescription);
 }
 
+function validateDelete(prescription) {
+  const schema = Joi.object({
+      name: Joi.string().min(1).max(100).required(),
+  });
+
+  return schema.validate(prescription);
+}
+
+
 module.exports.Prescription = Prescription;  // Export the model
 module.exports.validatePrescription = validatePrescription
+module.exports.validateDelete = validateDelete
