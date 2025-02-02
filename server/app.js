@@ -2,12 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose')
 const users = require('./routes/users')
 const dashboard = require('./routes/dashboard')
-<<<<<<< HEAD
 const prescription = require('./routes/prescription')
 
-=======
+
 const cors = require('cors')
->>>>>>> 8e4953fcfa7d04df70316ac6b419d9a7e15b45f1
+
 
 const app = express();
 app.use(cors({

@@ -5,8 +5,7 @@ import '../styles/Dashboard.css';
 
 interface Prescription {
 
-  drugName: string;
-  image: string;
+  name: string;
   dosage: string;
 }
 
@@ -22,8 +21,7 @@ const PrescriptionList: React.FC<PrescriptionListProps> = ({ prescriptions }) =>
 
           <Prescription
 
-            drugName={prescription.drugName}
-            image={prescription.image}
+            name={prescription.name}
             dosage={prescription.dosage}
           />
       ))}

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 // Define Prescription Schema
 const prescriptionSchema = new mongoose.Schema({
@@ -8,7 +9,6 @@ const prescriptionSchema = new mongoose.Schema({
   },
   image: {
     type: String, // URL or path to image
-    required: true
   },
   dosage: {
     type: String,

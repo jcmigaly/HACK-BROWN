@@ -23,6 +23,9 @@ router.post('/me', auth, async (req, res) => {
     // TODO: ADD CALL TO API THAT GETS THE PILL PICTURE
     const user = await User.findById(req.user._id)
     user.prescriptions.push(req.body)
+
+    await user.save()
+    res.send(user)
 })
 
 module.exports = router; //export the router object
