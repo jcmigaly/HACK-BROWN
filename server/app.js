@@ -6,6 +6,7 @@ const prescription = require('./routes/prescription')
 const cors = require('cors')
 
 const app = express();
+require('./startup/prod')(app)
 app.use(cors({
     origin: 'http://localhost:5173', // Specific frontend URL, not '*'
     credentials: true, // Allows cookies, authorization headers, etc.
@@ -22,6 +23,8 @@ mongoose.connect('mongodb://localhost/scriptly')
 app.use('/api/users', users) //route all users endpoints to users file
 app.use('/api/dashboard', dashboard) // route all dashboard endpoints to dasboard file
 app.use('/api/prescription', prescription)
+
+
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}... \nMake calls to http://localhost:${port}/`));

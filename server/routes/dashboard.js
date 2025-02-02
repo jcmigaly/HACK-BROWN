@@ -50,7 +50,6 @@ router.post('/me', auth, async (req, res) => {
         });
         user.interactions.push(curr_interaction)
     })
-    
     await user.save()
     res.send(user.interactions)
 })
