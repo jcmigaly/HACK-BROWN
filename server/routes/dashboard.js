@@ -4,12 +4,25 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('../models/User');
 const auth = require('../middleware/auth')
+const { Prescription, validatePrescription } = require('../models/Prescription');
 
-//takes the id of a user in the database and returns all the meals for that user
+
+// Given a person logged in, if they have valid JWT, get all their info
 router.get('/', auth, async (req, res) => {
     const user = await User.findById(req.user._id)
-    if (!user) return res.status(404).send('The user with the given ID was not found')
+    if (!user) return res.status(400).send('The user with the given ID was not found')
     res.send(user)
+})
+
+// Add a single prescription to user 
+router.post('/me', auth, async (req, res) => {
+    const { error } = validatePrescription(req.body)
+    if (error) {
+        return res.status(400).send(error.details[0].message)
+    }
+    // TODO: ADD CALL TO API THAT GETS THE PILL PICTURE
+    const user = await User.findById(req.user._id)
+    user.prescriptions.push(req.body)
 })
 
 module.exports = router; //export the router object

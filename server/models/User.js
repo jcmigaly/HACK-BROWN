@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
-const Prescription = require('./Prescription');
+const { Prescription } = require('./Prescription');
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -47,10 +47,7 @@ function validateRegister(user) {
         email: Joi.string().min(5).max(50).required(),
         password: Joi.string().min(5).max(255).required(),
       });
-    const { error, value } = schema.validate(user);
-    console.log("Joi Validation Result:", { error, value });
-    return { error, value };
-    //   return schema.validate(user);
+      return schema.validate(user);
 }
 
 function validateLogin(User) {
@@ -58,8 +55,7 @@ function validateLogin(User) {
         email: Joi.string().min(5).max(50).required(),
         password: Joi.string().min(5).max(255).required(),
       });
-    
-      return schema.validate(User);
+    return schema.validate(User);
 }
 
 module.exports.User = User; //export the User object

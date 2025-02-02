@@ -18,4 +18,14 @@ const prescriptionSchema = new mongoose.Schema({
 
 const Prescription = mongoose.model('Prescription', prescriptionSchema);
 
-module.exports = Prescription;  // Export the model
+function validatePrescription(prescription) {
+    const schema = Joi.object({
+        name: Joi.string().min(1).max(100).required(),
+        dosage: Joi.string().min(1).max(100).required()
+    });
+
+    return schema.validate(prescription);
+}
+
+module.exports.Prescription = Prescription;  // Export the model
+module.exports.validatePrescription = validatePrescription
