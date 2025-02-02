@@ -5,7 +5,7 @@ const { model } = require('mongoose');
 
 // Function to get drug interactions for an array of drugs
 async function getDrugInteractions(prescriptions) {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     let result = ''
