@@ -79,8 +79,8 @@ router.delete('/me', auth, async (req, res) => {
 // Calculate all prescriptions 
 router.post('/all', auth, async (req, res) => {
     const user = await User.findById(req.user._id)
-
     let interactionsArray = await getDrugInteractions(user.prescriptions)
+    console.log('here')
     user.interactions = []
 
     interactionsArray.forEach((item) => {
