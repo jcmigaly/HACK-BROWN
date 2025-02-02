@@ -10,6 +10,7 @@ import PrescriptionList from './PrescriptionList'
 import { PrescriptionProps } from './Prescription'
 import axios from 'axios'
 import plus from '../assets/plus.svg'
+import InteractionList from './InteractionList'
 
 
 interface DashboardProps {
@@ -149,10 +150,10 @@ function Dashboard(props: DashboardProps) {
         <Grid2 container spacing={3} direction= {'column'} className='mainGrid' >
                   <Grid2 container direction={'row'}spacing={0} className='welcomeContainer'>
                     {props.loggedIn ? <div className='welcome'>Hi, {props.firstName}!</div> : <></>}
-                    {props.loggedIn ? <button style={{marginRight: '5vw'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home')}}> Log Out</button> 
+                    {props.loggedIn ? <button style={{marginRight: '5vw', alignSelf: 'center'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home')}}> Log Out</button> 
                     : <button className='filledButton' onClick={()=> props.setPage('signUp')}> Register</button>}
                     </Grid2>
-                <Grid2 container spacing={3} direction={'row'} className='subGrid'>
+                <Grid2 container spacing={5} direction={'row'} className='subGrid'>
                 <Paper elevation={3} className='lBox' style={{ borderRadius: '20px', backgroundColor: '#F9F4F0' }}>
                         <Grid2 container spacing={0} direction={'column'} className='gridContainer'>
                           <Grid2 container direction={'row'} spacing={0} className='titleContainer'>
@@ -166,21 +167,17 @@ function Dashboard(props: DashboardProps) {
                         </Paper>
                         <Paper elevation={3} className='rBox' style={{ borderRadius: '20px' ,backgroundColor: '#F9F4F0'}}>
                         <Grid2 container spacing={0} direction={'column'} className='gridContainer'>
-                          <div className='titles'>Daily Dosage</div>
+                          <div className='titles'>Drug Interactions</div>
+                          <Grid2 container spacing={0} direction={'column'} className='interactionListContainer'>
+                            <InteractionList />
+                          </Grid2>
                           </Grid2>
 
                         </Paper>
                         
                     
                 </Grid2>
-                <Grid2 container spacing={3} direction={'column'} className='gridContainer' style={{padding: 0}}>
-                    
-                    <Paper elevation={3} className='bottomBox' style={{ borderRadius: '20px' , backgroundColor: '#F9F4F0'}}>
-                    <Grid2 container spacing={0} direction={'column'} className='gridContainer'>
-                      <div className='titles'>Interactions</div>
-                      </Grid2>
-                      </Paper>
-                </Grid2>
+                
                 <Modal open={open} onClose={handleClose}>
         <Box sx={{ ...modalStyle }}>
           <h2 className='titles'>Add New Prescription</h2>

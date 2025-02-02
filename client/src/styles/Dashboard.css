@@ -17,7 +17,7 @@
     overflow-y: 'auto' ;
     min-height: 100vh;
     height: auto;
-    margin-top: 57vh;
+    margin-top: 20vh;
 
 }
 
@@ -35,23 +35,20 @@ width: 100%; /* Takes full width */
     align-items: center;
 }
 .rBox{
-    width: 40vw;
-    height: 60vh;
+    width: 55vw;
+    height: 70vh;
+    
     ;
    
 }
 
 .lBox{
-    width: 50vw;
-    height: 60vh;
+    width: 35vw;
+    height: 70vh;
+   
 
 }
-.bottomBox{
-    width: 92vw;
-    height: 60vh;
-    margin-bottom: 20px;
 
-}
 
 .prescriptionContainer{
     border-radius: 20px;
@@ -71,8 +68,8 @@ width: 100%; /* Takes full width */
 
 .prescriptionList{
     overflow-y: auto;
-    height: 50vh; 
-    width: 40vw;
+    height: 80vh; 
+    width: 45vw;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -94,4 +91,29 @@ width: 100%; /* Takes full width */
     font-family: 'agrandir-reg';
     font-size: 20px;
 
+}
+.welcome{
+    color:#925833;
+    align-items: center;
+}
+
+.arrows{
+    height: 7vh;
+    width: auto;
+    object-fit: cover;
+    cursor: pointer;
+}
+.interactionContainer{
+    border-radius: 20px;
+    background-color: #F5E9E0;
+    width: 100%;
+    padding: 5px;
+    height:fit-content;
+    align-items: center;
+    
+    
+}
+.interactionListContainer{
+    overflow-y: auto;
+    height: 60vh;
 }
