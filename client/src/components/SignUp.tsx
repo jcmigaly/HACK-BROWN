@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import '../styles/LogIn.css'
 import {Grid2, Paper} from '@mui/material'
 import scribble from '../assets/HEAL.svg'
+import axios from 'axios'
 
 interface LogInProps {
     setPage: Dispatch<SetStateAction<string>>
@@ -9,6 +10,34 @@ interface LogInProps {
 }
 
 function SignUp(props: LogInProps) {
+  const [err, setErr] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
+
+ const handleSignUp = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/api/users/', { firstName, lastName, email, password },{ 
+        withCredentials: true // Required to send cookies/tokens
+      });
+      props.setLoggedIn(true);
+      props.setPage('dashboard');
+    } catch (error: unknown) {  // Explicitly declare error as 'unknown'
+        if (axios.isAxiosError(error)) {
+          
+        } else {
+          console.error('Unexpected error:', error);
+          setErr('An unexpected error occurred.');
+
+    }
+  }
+ }
+
+
+
+
     return (
       <Grid2 className='mainMessage'>
       <div style={{ fontSize: '60px', paddingInline: '10vw' , justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column', color: '#6c9482', fontFamily:  'agrandir-reg' }}>
@@ -33,17 +62,17 @@ function SignUp(props: LogInProps) {
 
        <Grid2 container spacing={1} style={{alignItems: 'flex-start', display: 'flex', flexDirection:'column'}}>
          <div>Password:</div> 
-       <input type="password" placeholder="Password" style={{width: '15vw',height: '5vh', backgroundColor: 'white', color: 'black'}}/>
+       <input type="password" placeholder="Password" onChange={(e)=>e.target.value} style={{width: '15vw',height: '5vh', backgroundColor: 'white', color: 'black'}}/>
        </Grid2>
        <Grid2 container spacing={1} style={{alignItems: 'flex-start', display: 'flex', flexDirection:'column'}}>
          <div>Confirm Password:</div> 
-       <input type="password" placeholder="Password" style={{width: '15vw',height: '5vh', backgroundColor: 'white', color: 'black'}}/>
+       <input type="password" placeholder="Password" onChange={(e)=>e.target.value} style={{width: '15vw',height: '5vh', backgroundColor: 'white', color: 'black'}}/>
        </Grid2>
        
 
        </Grid2>
        <button className='filledButton' style={{width: '10vw', height: '6vh', margin: '3vh'}} onClick={()=>{props.setLoggedIn(true); props.setPage('dashboard')}}> Register </button>
-       <div style={{fontSize: '20px' }}>Already have an account? <span style={{color: '#6c9482', cursor: 'pointer'}} onClick={()=> props.setPage('logIn')}>Log In</span></div>
+       <div style={{color: 'red', fontSize: '18px'}} >{err}</div>
        </Paper>
      </div>
        </Grid2>

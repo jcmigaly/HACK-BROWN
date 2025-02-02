@@ -28,7 +28,7 @@ function LogIn(props: LogInProps) {
  
       console.log("Full response:", response);
 
-      const token = response.headers['x-auth-ken'];  
+      const token = response.data.token;  
       console.log("Extracted Token:", token);
     
       if (token) {

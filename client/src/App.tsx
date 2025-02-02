@@ -20,7 +20,7 @@ function App() {
     <div className='App'>
       <Grid2 container direction={'row'} spacing={0} className='App-header'>
         <div style={{fontSize: '30px', color: 'black', fontFamily: 'agrandir-reg', margin: '5px', marginLeft: '20px', cursor: 'pointer'
-        }} onClick={()=> setPage('home')}>Scriptly</div>
+        }} onClick={()=>{setPage('home'); setLoggedIn(false)}}>Scriptly</div>
       </Grid2>
       <Grid2
     container

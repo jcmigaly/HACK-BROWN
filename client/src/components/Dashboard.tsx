@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import '../styles/Dashboard.css'
@@ -63,9 +63,15 @@ function Dashboard(props: DashboardProps) {
     props.setjwt('')
   }
 
-      if (props.loggedIn) {
-        getUser()
-      }    
+  useEffect(() => {
+    if (props.loggedIn) {
+      getUser()
+    } else {
+      clearUser()
+    }
+  }, [props.loggedIn])
+
+        
     return (
         <Grid2 container spacing={3} direction= {'column'} className='mainGrid' >
                   <Grid2 container direction={'row'}spacing={128.5} className='welcomeContainer'>
