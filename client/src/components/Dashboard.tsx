@@ -11,6 +11,8 @@ import { PrescriptionProps } from './Prescription'
 import axios from 'axios'
 import plus from '../assets/plus.svg'
 import InteractionList from './InteractionList'
+import {interaction} from './InteractionList'
+import loader from '../assets/loading.gif'
 
 
 interface DashboardProps {
@@ -30,11 +32,15 @@ interface DashboardProps {
 }
 
 
+
 function Dashboard(props: DashboardProps) {
   const [addDrug, setAddDrug] = useState<boolean>(false)
   const [deleteDrug, setDeleteDrug] = useState<string>('')
   const [newPrescription, setNewPrescription] = useState<PrescriptionProps>({ name: '', dosage: '', deleteDrug: () => {} });
   const [open, setOpen] = useState<boolean>(false)
+  const [interactions, setInteractions] = useState<interaction[]>([])
+  const [switcher, setSwitcher] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   
 
   const handleClose = () => setOpen(false);
@@ -47,6 +53,7 @@ function Dashboard(props: DashboardProps) {
         console.log(response.data)
         props.setFirstName(response.data.firstName)
         props.setPrescriptions(response.data.prescriptions)
+        setSwitcher(!switcher)
 
       } catch (error: unknown)
       {
@@ -58,6 +65,27 @@ function Dashboard(props: DashboardProps) {
           }
       }
     }
+  }
+
+  const getInteractions = async ()=> {
+    try{
+      const response = await axios.get('http://localhost:3000/api/dashboard/', {
+        headers: { 'x-auth-token': props.jwt }
+      });
+      console.log(response.data)
+      setInteractions(response.data.interactions)
+      setSwitcher(!switcher)
+    } catch (error: unknown)
+    {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          console.log('Error getting user:', error.response.data);
+        } else {
+          console.log('Network error or CORS issue:', error.message);
+        }
+    }
+  }
+
   }
 
 
@@ -76,6 +104,11 @@ function Dashboard(props: DashboardProps) {
     getUser()
 
   }, [deleteDrug])
+
+  useEffect(() => {
+    getInteractions()
+
+  }, [switcher])
 
 
   const deleteDrugCall = async (name: string) => {
@@ -109,14 +142,13 @@ function Dashboard(props: DashboardProps) {
   };
 
   const handleSubmit = async () => {
-    
-      if (!props.loggedIn){
         
         props.setUnsavedPrescriptions([...props.unsavedPrescriptions, newPrescription])
         console.log(props.unsavedPrescriptions)
+        handleClose()
         
-      } else{
-        getUser()
+     if (props.loggedIn){
+        setLoading(true)
         try{
           const response = await axios.post(
             'http://localhost:3000/api/dashboard/me',
@@ -126,6 +158,11 @@ function Dashboard(props: DashboardProps) {
             }
           );
           console.log(response.data)
+          props.setFirstName(response.data.firstName)
+          props.setPrescriptions(response.data.prescriptions)
+          setInteractions(response.data.interactions)
+          setLoading(false)
+
       }  catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           if (error.response) {
@@ -137,7 +174,7 @@ function Dashboard(props: DashboardProps) {
     }
   }}
   setNewPrescription({ name: '', dosage: '' , deleteDrug: () => {}});
-      handleClose()
+    
 
     
   }
@@ -150,7 +187,7 @@ function Dashboard(props: DashboardProps) {
         <Grid2 container spacing={3} direction= {'column'} className='mainGrid' >
                   <Grid2 container direction={'row'}spacing={0} className='welcomeContainer'>
                     {props.loggedIn ? <div className='welcome'>Hi, {props.firstName}!</div> : <></>}
-                    {props.loggedIn ? <button style={{marginRight: '5vw', alignSelf: 'center'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home')}}> Log Out</button> 
+                    {props.loggedIn ? <button style={{marginRight: '5vw', alignSelf: 'center'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home'); props.clearUser(); props.setjwt('')}}> Log Out</button> 
                     : <button className='filledButton' onClick={()=> props.setPage('signUp')}> Register</button>}
                     </Grid2>
                 <Grid2 container spacing={5} direction={'row'} className='subGrid'>
@@ -167,9 +204,16 @@ function Dashboard(props: DashboardProps) {
                         </Paper>
                         <Paper elevation={3} className='rBox' style={{ borderRadius: '20px' ,backgroundColor: '#F9F4F0'}}>
                         <Grid2 container spacing={0} direction={'column'} className='gridContainer'>
+                        <Grid2 container direction={'row'} spacing={0} className='titleContainer'>
                           <div className='titles'>Drug Interactions</div>
+                          {loading ?
+                          <Grid2 container direction={'row'} spacing={2}>
+                            <div className='subtitles'>calculating new interactions</div>
+                          <img src={loader}  className='plus' style={{cursor: 'pointer'}} />
+                          </Grid2>: !props.loggedIn ? <div className='subtitles'>Register to see interactions</div> :<></>}
+                          </Grid2>
                           <Grid2 container spacing={0} direction={'column'} className='interactionListContainer'>
-                            <InteractionList />
+                            <InteractionList interactions={interactions}/>
                           </Grid2>
                           </Grid2>
 

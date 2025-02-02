@@ -68,7 +68,7 @@ width: 100%; /* Takes full width */
 
 .prescriptionList{
     overflow-y: auto;
-    height: 80vh; 
+    height: 60vh; 
     width: 45vw;
     display: flex;
     flex-direction: column;
@@ -116,4 +116,9 @@ width: 100%; /* Takes full width */
 .interactionListContainer{
     overflow-y: auto;
     height: 60vh;
+}
+.subtitles{
+font-size: 20px;
+color:#925833;
+font-family: 'agrandir-bold'
 }

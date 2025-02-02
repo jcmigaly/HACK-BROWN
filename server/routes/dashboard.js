@@ -16,6 +16,12 @@ router.get('/', auth, async (req, res) => {
     res.send(user)
 })
 
+router.get('/', auth, async (req, res) => {
+    const user = await User.findById(req.user._id)
+    if (!user) return res.status(400).send('The user with the given ID was not found')
+    res.send(user)
+})
+
 // Add a single prescription to user 
 router.post('/me', auth, async (req, res) => {
     const { error } = validatePrescription(req.body)
@@ -52,7 +58,7 @@ router.post('/me', auth, async (req, res) => {
     })
     
     await user.save()
-    res.send(user.interactions)
+    res.send(user)
 })
 
 // Delete a single prescription to user 
@@ -76,5 +82,13 @@ router.delete('/me', auth, async (req, res) => {
     await user.save()
     res.send(user)
 })
+
+router.get('/interactions', auth, async (req, res) => {
+    const user = await User.findById(req.user._id)
+    if (!user) return res.status(400).send('The user with the given ID was not found')
+    res.send(user.interactions);
+})
+
+
 
 module.exports = router; //export the router object

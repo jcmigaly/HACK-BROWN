@@ -24,6 +24,7 @@ function App() {
   const clearUser = () => {
     setFirstName('')
     setPrescriptions([])
+    setUnsavedPrescriptions([])
   }
 
   const handleGetStarted = async() => {
