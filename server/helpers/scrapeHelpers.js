@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const { setTimeout } = require('node:timers/promises');
-const { result } = require('lodash');
+const { model } = require('mongoose');
 
 // Function to get drug interactions for an array of drugs
 async function getDrugInteractions(prescriptions) {
@@ -39,10 +39,6 @@ async function getDrugInteractions(prescriptions) {
     const html = await page.content();
     result = html
     await browser.close();
-
-    // console.log(result)
-    console.log('HERRE')
-    console.log(extractDrugInteractions(result))
     return result
 }
 
@@ -77,5 +73,5 @@ function extractDrugInteractions(html) {
     return interactionsDivs;
 }
   
-  // Call the function for Advil (with the drug name)
-getDrugInteractions([{ name: 'acetaminophen' }, { name: 'warfarin' }, { name: 'aspirin' }]);
+module.exports.getDrugInteractions = getDrugInteractions
+module.exports.extractDrugInteractions = extractDrugInteractions
