@@ -5,6 +5,8 @@ const router = express.Router();
 const { User } = require('../models/User');
 const auth = require('../middleware/auth')
 const { Prescription, validatePrescription, validateDelete } = require('../models/Prescription');
+const { getDrugInteractions, extractDrugInteractions } = require('../helpers/scrapeHelpers')
+const { Interaction } = require('../models/Interaction')
 
 
 // Given a person logged in, if they have valid JWT, get all their info
@@ -20,12 +22,39 @@ router.post('/me', auth, async (req, res) => {
     if (error) {
         return res.status(400).send(error.details[0].message)
     }
-    // TODO: ADD CALL TO API THAT GETS THE PILL PICTURE
     const user = await User.findById(req.user._id)
+    // Check if the prescription already exists by name
+    const prescriptionExists = user.prescriptions.some(prescription => prescription.name === req.body.name);
+
+    if (prescriptionExists) {
+        return res.status(400).send("Prescription with this name already exists.");
+    }
     user.prescriptions.push(req.body)
 
+    let interactionsArray = await getDrugInteractions(user.prescriptions)
+    user.interactions = []
+
+    interactionsArray.forEach((item) => {
+        // Remove first 11 characters
+        let cleanedText = item.category.substring(11);
+        console.log(cleanedText)
+        
+        // Split on ',' and trim whitespace
+        let drugs = cleanedText.split(',').map(drug => drug.trim());
+        if (!drugs[1]) {
+            return; // This will skip the current iteration and move to the next item in the loop
+        }
+        let curr_interaction = new Interaction({
+            name1: drugs[0],
+            name2: drugs[1],
+            level: item.level,  // Assuming level corresponds to severity
+            description: item.description
+        });
+        user.interactions.push(curr_interaction)
+    })
+    
     await user.save()
-    res.send(user)
+    res.send(user.interactions)
 })
 
 // Delete a single prescription to user 
@@ -35,8 +64,30 @@ router.delete('/me', auth, async (req, res) => {
         return res.status(400).send(error.details[0].message)
     }
     const user = await User.findById(req.user._id)
-    user.prescriptions = user.prescriptions.filter(prescription => prescription.name !== prescriptionName);
+    user.prescriptions = user.prescriptions.filter(prescription => prescription.name !== req.body.name);
 
+    let interactionsArray = await getDrugInteractions(user.prescriptions)
+    user.interactions = []
+
+    interactionsArray.forEach((item) => {
+        // Remove first 11 characters
+        let cleanedText = item.category.substring(11);
+        console.log(cleanedText)
+        
+        // Split on ',' and trim whitespace
+        let drugs = cleanedText.split(',').map(drug => drug.trim());
+        if (!drugs[1]) {
+            return; // This will skip the current iteration and move to the next item in the loop
+        }
+        let curr_interaction = new Interaction({
+            name1: drugs[0],
+            name2: drugs[1],
+            level: item.level,  // Assuming level corresponds to severity
+            description: item.description
+        });
+        user.interactions.push(curr_interaction)
+    })
+    
     await user.save()
     res.send(user)
 })

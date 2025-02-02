@@ -3,10 +3,7 @@ const mongoose = require('mongoose')
 const users = require('./routes/users')
 const dashboard = require('./routes/dashboard')
 const prescription = require('./routes/prescription')
-
-
 const cors = require('cors')
-
 
 const app = express();
 app.use(cors({
