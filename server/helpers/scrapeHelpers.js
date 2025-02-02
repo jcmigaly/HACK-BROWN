@@ -16,6 +16,7 @@ async function getDrugInteractions(prescriptions) {
         try {
             // Type in the drug name into the search box and trigger the search
             if (i == 0) {
+                await setTimeout(500)
                 await page.type('#livesearch-interaction-basic', drugName); // Use the id selector
             } else {
                 await setTimeout(500)

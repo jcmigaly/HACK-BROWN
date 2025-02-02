@@ -91,8 +91,8 @@ router.get('/interactions', auth, async (req, res) => {
 // Calculate all prescriptions 
 router.get('/all', auth, async (req, res) => {
     const user = await User.findById(req.user._id)
-
     let interactionsArray = await getDrugInteractions(user.prescriptions)
+    console.log('here')
     user.interactions = []
 
     interactionsArray.forEach((item) => {
