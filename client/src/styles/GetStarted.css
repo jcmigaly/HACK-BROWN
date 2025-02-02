@@ -1,22 +1,8 @@
-.filledButton{
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 30px;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #925833;
-    cursor: pointer;
-    transition: border-color 0.25s;
-    font-family: 'agrandir-reg';
-    width: fit-content;
-    color: white;
-  }
 
   .emptyButton{
     border-radius: 8px;
     border: 1px solid transparent;
-    padding: 0.6em 1.2em;
+    padding: 0.6rem 1.2rem;
     font-size: 30px;
     font-weight: 500;
     font-family: inherit;
@@ -27,6 +13,22 @@
     width: fit-content;
     color: #925833;
     border-color: #925833;
+  }
+  .otherButton{
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6rem 1.2rem;
+    font-size: 30px;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #925833;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    font-family: 'agrandir-reg';
+    width: fit-content;
+    color: white;
+
+
   }
 
   .brandText{

@@ -11,3 +11,9 @@
     color: white;
     margin-top: 1vh;
   }
+
+  .scribble{
+    height: 20vh;
+    width: auto; /* Maintain aspect ratio */
+  }
+  
