@@ -36,7 +36,7 @@ router.delete('/me', auth, async (req, res) => {
     }
     // TODO: ADD CALL TO API THAT GETS THE PILL PICTURE
     const user = await User.findById(req.user._id)
-    user.prescriptions = user.prescriptions.filter(prescription => prescription.name !== prescriptionName);
+    user.prescriptions = user.prescriptions.filter(prescription => prescription.name !== req.body.name);
 
     await user.save()
     res.send(user)

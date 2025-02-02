@@ -8,9 +8,10 @@ import trash from '../assets/trash.svg'
 export interface PrescriptionProps{
     name: string;
     dosage: string;
+    deleteDrug: (name: string) => void;
 }
 
-function Prescription(props: PrescriptionProps) {
+const Prescription = ({ name, dosage, deleteDrug }: { name: string, dosage: string, deleteDrug: (name: string) => void }) => {
     return (
     
         <div className='prescriptionContainer'>
@@ -20,11 +21,11 @@ function Prescription(props: PrescriptionProps) {
        
            
         
-            <div style={{fontSize: '20px', paddingInline: '1vw', fontFamily:'agrandir-bold'}}>{props.name}</div>
+            <div style={{fontSize: '20px', paddingInline: '1vw', fontFamily:'agrandir-bold'}}>{name}</div>
             
-            <div style={{fontSize: '18px', paddingInline: '1vw'}}>Usage Instructions: {props.dosage}</div>
+            <div style={{fontSize: '18px', paddingInline: '1vw'}}>Usage Instructions: {dosage}</div>
             </Grid2>
-            <img src={trash} alt='trash' style={{height: '30px', width: '30px', cursor: 'pointer',marginLeft: '10px'}}/>
+            <img src={trash} alt='trash' style={{height: '30px', width: '30px', cursor: 'pointer',marginLeft: '10px'}} onClick={(e)=> deleteDrug(name)}/>
             </Grid2>
             </div>
 

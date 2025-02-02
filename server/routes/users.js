@@ -27,15 +27,9 @@ router.post('/', async (req, res) => {
     const token = user.generateAuthToken()
 
     // Send JWT to client header
-    res.cookie('x-auth-token', token, {
-        httpOnly: true,
-        sameSite: 'None',  // Important for cross-origin requests
-        secure: false,     // Disable the secure flag in development (cookies work without HTTPS)
-        maxAge: 24 * 60 * 60 * 1000  // Cookie expiration time
-      });
-    res.header('x-auth-token', token)
-    console.log('Sending response with headers:', res.getHeaders());
-    res.send(_.pick(user, ['_id', 'firstName', 'lastName', 'email']))
+   
+    res.setHeader('x-auth-token', token)
+    .send({user: _.pick(user, ['_id', 'name', 'email']), token: token})
 })
 
 // POST: Login User

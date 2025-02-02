@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import '../styles/Dashboard.css'
-import {Grid, Grid2, grid2Classes, Paper, TableRow} from '@mui/material'
+import {Box, Button, Grid, Grid2, grid2Classes, Modal, Paper, TableRow, TextField} from '@mui/material'
 import Prescription from './Prescription'
 import scribble from '../assets/HEAL.svg'
 import ibuprofen from '../assets/ibuprofen.jpg'
@@ -18,12 +18,25 @@ interface DashboardProps {
     setPage: Dispatch<SetStateAction<string>>;
     jwt: string;
     setjwt: Dispatch<SetStateAction<string>>;
+    setFirstName: Dispatch<SetStateAction<string>>;
+    setPrescriptions: Dispatch<SetStateAction<PrescriptionProps[]>>;
+    firstName: string;
+    prescriptions: PrescriptionProps[];
+    clearUser: () => void;
+
+    unsavedPrescriptions: PrescriptionProps[];
+    setUnsavedPrescriptions: Dispatch<SetStateAction<PrescriptionProps[]>>;
 }
 
+
 function Dashboard(props: DashboardProps) {
-  const [prescriptions, setPrescriptions] = useState<PrescriptionProps[]>([])
-  const [firstName, setFirstName] = useState<string>('')
   const [addDrug, setAddDrug] = useState<boolean>(false)
+  const [deleteDrug, setDeleteDrug] = useState<string>('')
+  const [newPrescription, setNewPrescription] = useState<PrescriptionProps>({ name: '', dosage: '', deleteDrug: () => {} });
+  const [open, setOpen] = useState<boolean>(false)
+  
+
+  const handleClose = () => setOpen(false);
 
     const getUser = async () => {
       try{
@@ -31,8 +44,8 @@ function Dashboard(props: DashboardProps) {
           headers: { 'x-auth-token': props.jwt }
         });
         console.log(response.data)
-        setFirstName(response.data.firstName)
-        setPrescriptions(response.data.prescriptions)
+        props.setFirstName(response.data.firstName)
+        props.setPrescriptions(response.data.prescriptions)
 
       } catch (error: unknown)
       {
@@ -46,17 +59,14 @@ function Dashboard(props: DashboardProps) {
     }
   }
 
-  const clearUser = () => {
-    setFirstName('')
-    setPrescriptions([])
-    props.setjwt('')
-  }
+
 
   useEffect(() => {
     if (props.loggedIn) {
       getUser()
     } else {
-      clearUser()
+      props.clearUser()
+      props.setjwt('')
     }
   }, [props.loggedIn])
 
@@ -64,7 +74,72 @@ function Dashboard(props: DashboardProps) {
 
     getUser()
 
-  }, [addDrug,deleteDrug])
+  }, [deleteDrug])
+
+
+  const deleteDrugCall = async (name: string) => {
+    if (!props.loggedIn) {
+      props.setUnsavedPrescriptions(props.unsavedPrescriptions.filter(prescription => prescription.name !== name))
+      return
+    }
+
+    try {
+      const response = await axios.delete('http://localhost:3000/api/dashboard/me', {
+        data: { name }, // Pass the data in the "data" field, not as a separate argument
+        headers: { 'x-auth-token': props.jwt } // Include the token in the headers
+    });
+      console.log(response.data)
+      getUser()
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          console.log('Error deleting drug:', error.response.data);
+        } else {
+          console.log('Network error or CORS issue:', error.message);
+        }
+      }
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewPrescription({ ...newPrescription, [name]: value });
+
+  };
+
+  const handleSubmit = async () => {
+    
+      if (!props.loggedIn){
+        
+        props.setUnsavedPrescriptions([...props.unsavedPrescriptions, newPrescription])
+        console.log(props.unsavedPrescriptions)
+        
+      } else{
+        getUser()
+        try{
+          const response = await axios.post(
+            'http://localhost:3000/api/dashboard/me',
+            { name: newPrescription.name, dosage: newPrescription.dosage }, // Fixing the data object
+            {
+              headers: { 'x-auth-token': props.jwt }, // Placing headers correctly
+            }
+          );
+          console.log(response.data)
+      }  catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            console.log('Error adding drug:', error.response.data);
+          } else {
+            console.log('Network error or CORS issue:', error.message);
+  
+      }
+    }
+  }}
+  setNewPrescription({ name: '', dosage: '' , deleteDrug: () => {}});
+      handleClose()
+
+    
+  }
 
 
 
@@ -73,8 +148,8 @@ function Dashboard(props: DashboardProps) {
       <>
         <Grid2 container spacing={3} direction= {'column'} className='mainGrid' >
                   <Grid2 container direction={'row'}spacing={0} className='welcomeContainer'>
-                    {props.loggedIn ? <div className='welcome'>Hi, {firstName}!</div> : <></>}
-                    {props.loggedIn ? <button style={{marginRight: '5vw'}} className='filledButton' onClick={()=> props.setLoggedIn(false)}> Log Out</button> 
+                    {props.loggedIn ? <div className='welcome'>Hi, {props.firstName}!</div> : <></>}
+                    {props.loggedIn ? <button style={{marginRight: '5vw'}} className='filledButton' onClick={()=> {props.setLoggedIn(false);props.setPage('home')}}> Log Out</button> 
                     : <button className='filledButton' onClick={()=> props.setPage('signUp')}> Register</button>}
                     </Grid2>
                 <Grid2 container spacing={3} direction={'row'} className='subGrid'>
@@ -83,10 +158,9 @@ function Dashboard(props: DashboardProps) {
                           <Grid2 container direction={'row'} spacing={0} className='titleContainer'>
                         <div className='titles'>My Prescriptions</div>
                         <img src={plus} alt='plus' className='plus' style={{cursor: 'pointer'
-                        }} onClick={()=> setAddDrug(true)} />
+                        }} onClick={()=> setOpen(true)} />
                         </Grid2>
-                        
-                        <PrescriptionList prescriptions={prescriptions}/>
+                        {props.loggedIn ? <PrescriptionList prescriptions={props.prescriptions} deleteDrug={deleteDrugCall}/> : <PrescriptionList prescriptions={props.unsavedPrescriptions} deleteDrug={deleteDrugCall}/>}
                         
                         </Grid2>
                         </Paper>
@@ -107,11 +181,32 @@ function Dashboard(props: DashboardProps) {
                       </Grid2>
                       </Paper>
                 </Grid2>
+                <Modal open={open} onClose={handleClose}>
+        <Box sx={{ ...modalStyle }}>
+          <h2 className='titles'>Add New Prescription</h2>
+          <TextField label="Drug Name" name="name" value={newPrescription.name} onChange={handleChange} fullWidth />
+          <TextField label="Dosage" name="dosage" value={newPrescription.dosage} onChange={handleChange} fullWidth />
+          <Button onClick={handleSubmit}>Add</Button>
+        </Box>
+      </Modal>
           
         </Grid2>
         <div></div>
         </>
     )
+}
+
+const modalStyle = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  color: 'black',
 }
 
 export default Dashboard

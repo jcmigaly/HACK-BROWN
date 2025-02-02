@@ -12,7 +12,7 @@ function getStarted(props: LogInProps) {
        <div style={{  justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column', color: 'black', fontFamily:  'agrandir-reg' }}>
         
         <Grid2 container spacing={2} direction={'column'} alignItems={'center'}>
-        <div className='brandText'>Get Started with Scriptly</div>
+        <div className='brandText'>Get started with Scriptly</div>
         <button className='otherButton' onClick={()=>props.setPage('dashboard')}> First Time User</button> 
         <button className='emptyButton' onClick={()=>props.setPage('logIn')}> Returning User</button> 
         </Grid2>

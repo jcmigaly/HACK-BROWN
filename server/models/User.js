@@ -46,6 +46,10 @@ function validateRegister(user) {
         lastName: Joi.string().min(2).max(50).required(),
         email: Joi.string().min(5).max(50).required(),
         password: Joi.string().min(5).max(255).required(),
+        prescriptions: Joi.array().items(Joi.object({
+            name: Joi.string().min(1).max(100).required(),
+            dosage: Joi.string().min(1).max(100).required()
+        }))
       });
       return schema.validate(user);
 }
